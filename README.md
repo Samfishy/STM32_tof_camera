@@ -1,4 +1,4 @@
-![WhatsApp Image 2026-02-12 at 00 56 32](https://github.com/user-attachments/assets/cd300e8b-a722-4d87-a9f9-c16eaccbf46f)ToF Camera with STM32 – Embedded Image Processing System
+ToF Camera with STM32 – Embedded Image Processing System
 Overview
 This project implements a Time-of-Flight (ToF) camera system using an STM32 microcontroller.  
 The system captures frames from the ToF sensor, performs interpolation, displays the processed image, and allows storing and viewing captured frames from external QSPI flash memory.
