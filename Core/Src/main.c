@@ -171,7 +171,6 @@ void bilinear_8x8_to_16x16_q15(void)
     {
         q31_t src_y = ((((q31_t)y << 20) + (1 << 19)) * IN_H) / OUT_H - (1 << 19);
 
-        // Clamp Y to prevent reading past the top or bottom edges
         if (src_y < 0) src_y = 0;
         if (src_y > max_y) src_y = max_y;
 
@@ -179,7 +178,6 @@ void bilinear_8x8_to_16x16_q15(void)
         {
             q31_t src_x = ((((q31_t)x << 20) + (1 << 19)) * IN_W) / OUT_W - (1 << 19);
 
-            // Clamp X to prevent reading past the right edge (which prevents left-edge mirroring)
             if (src_x < 0) src_x = 0;
             if (src_x > max_x) src_x = max_x;
 
@@ -939,9 +937,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
             if(menu_mode == 1)
             {
-                strcpy(view_type_str, "**M");
-                strcpy(page_num_str, "*IN");
-                strcpy(status_str, "REC");
+                strcpy(view_type_str, "----");
+                strcpy(page_num_str, "*----");
+                strcpy(status_str, "REC MODE");
                 flag_update_labels = true;
             }
         }
@@ -996,13 +994,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
             // Cycle Interpolation: 1 -> 2 -> 3 -> 1
             if (interpolation == 1) {
                 interpolation = 2;
-                strcpy(page_num_str, "2x int");
+                strcpy(zone_int, "2x int");
             } else if (interpolation == 2) {
-                interpolation = 3;
-                strcpy(page_num_str, "3x int");
+                interpolation = 4;
+                strcpy(zone_int, "4x int");
             } else {
                 interpolation = 1;
-                strcpy(page_num_str, "1x int");
+                strcpy(zone_int, "1x int");
             }
 
             OUT_W = IN_W * interpolation;
@@ -1040,14 +1038,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
                 mode = 1;
                 vl53l5cx_set_resolution(&Dev, VL53L5CX_RESOLUTION_4X4);
                 IN_W = 4; IN_H = 4;
-                strcpy(view_type_str, "4x4 zones");
+                strcpy(zone_mode, "4x4 zones");
             }
             else
             {
                 mode = 0;
                 vl53l5cx_set_resolution(&Dev, VL53L5CX_RESOLUTION_8X8);
                 IN_W = 8; IN_H = 8;
-                strcpy(view_type_str, "8x8 zones");
+                strcpy(zone_mode, "8x8 zones");
             }
 
             OUT_W = IN_W * interpolation;
@@ -1097,6 +1095,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
             HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
             ini = 0;
             menu_mode = 1;
+
             vl53l5cx_stop_ranging(&Dev);
         }
         else
@@ -1105,12 +1104,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
             ini = 1;
 
             // Reset labels to match current state when returning to Live Mode
-            if(mode == 0) strcpy(view_type_str, "8x8 zones");
-            else strcpy(view_type_str, "4x4 zones");
+            if(mode == 0) strcpy(zone_mode, "8x8 zones");
+            else strcpy(zone_mode, "4x4 zones");
 
-            if(interpolation == 1) strcpy(page_num_str, "1x int");
-            else if(interpolation == 2) strcpy(page_num_str, "1x int");
-            else strcpy(page_num_str, "1x int");
+            if(interpolation == 1) strcpy(zone_int, "1x int");
+            else if(interpolation == 2) strcpy(zone_int, "1x int");
+            else strcpy(zone_int, "1x int");
 
             strcpy(status_str, "LIVE view");
             flag_update_labels = true;
