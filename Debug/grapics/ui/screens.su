@@ -1,0 +1,7 @@
+../grapics/ui/screens.c:67:6:tick_screen_live_view_page	16	static
+../grapics/ui/screens.c:199:6:tick_screen_heat_map_page	16	static
+../grapics/ui/screens.c:25:6:create_screen_live_view_page	24	static
+../grapics/ui/screens.c:79:6:create_screen_heat_map_page	40	static
+../grapics/ui/screens.c:243:6:tick_screen	8	static
+../grapics/ui/screens.c:248:6:tick_screen_by_id	8	static
+../grapics/ui/screens.c:332:6:create_screens	24	static

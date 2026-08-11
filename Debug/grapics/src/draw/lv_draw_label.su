@@ -1,0 +1,4 @@
+../grapics/src/draw/lv_draw_label.c:379:16:hex_char_to_num	0	static
+../grapics/src/draw/lv_draw_label.c:55:28:lv_draw_label_dsc_init	8	static
+../grapics/src/draw/lv_draw_label.c:364:6:lv_draw_letter	8	static
+../grapics/src/draw/lv_draw_label.c:77:28:lv_draw_label	256	static
