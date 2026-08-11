@@ -4,7 +4,7 @@ grapics/demos/widgets/assets/img_clothes.o: \
  ../grapics/demos/widgets/assets/../../../src/misc/lv_log.h \
  ../grapics/demos/widgets/assets/../../../src/misc/../lv_conf_internal.h \
  ../grapics/demos/widgets/assets/../../../src/misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/demos/widgets/assets/../../../src/misc/lv_types.h \
  ../grapics/demos/widgets/assets/../../../src/misc/lv_timer.h \
  ../grapics/demos/widgets/assets/../../../src/misc/../hal/lv_hal_tick.h \
@@ -230,7 +230,7 @@ grapics/demos/widgets/assets/img_clothes.o: \
 ../grapics/demos/widgets/assets/../../../src/misc/lv_log.h:
 ../grapics/demos/widgets/assets/../../../src/misc/../lv_conf_internal.h:
 ../grapics/demos/widgets/assets/../../../src/misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/demos/widgets/assets/../../../src/misc/lv_types.h:
 ../grapics/demos/widgets/assets/../../../src/misc/lv_timer.h:
 ../grapics/demos/widgets/assets/../../../src/misc/../hal/lv_hal_tick.h:

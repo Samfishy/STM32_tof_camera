@@ -4,7 +4,7 @@ grapics/src/extra/widgets/tileview/lv_tileview.o: \
  ../grapics/src/extra/widgets/tileview/../../../core/lv_obj.h \
  ../grapics/src/extra/widgets/tileview/../../../core/../lv_conf_internal.h \
  ../grapics/src/extra/widgets/tileview/../../../core/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/extra/widgets/tileview/../../../core/../misc/lv_style.h \
  ../grapics/src/extra/widgets/tileview/../../../core/../misc/../font/lv_font.h \
  ../grapics/src/extra/widgets/tileview/../../../core/../misc/../font/../lv_conf_internal.h \
@@ -90,7 +90,7 @@ grapics/src/extra/widgets/tileview/lv_tileview.o: \
 ../grapics/src/extra/widgets/tileview/../../../core/lv_obj.h:
 ../grapics/src/extra/widgets/tileview/../../../core/../lv_conf_internal.h:
 ../grapics/src/extra/widgets/tileview/../../../core/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/extra/widgets/tileview/../../../core/../misc/lv_style.h:
 ../grapics/src/extra/widgets/tileview/../../../core/../misc/../font/lv_font.h:
 ../grapics/src/extra/widgets/tileview/../../../core/../misc/../font/../lv_conf_internal.h:

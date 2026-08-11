@@ -5,7 +5,7 @@ grapics/examples/widgets/calendar/lv_example_calendar_1.o: \
  ../grapics/examples/widgets/calendar/../../../src/misc/lv_log.h \
  ../grapics/examples/widgets/calendar/../../../src/misc/../lv_conf_internal.h \
  ../grapics/examples/widgets/calendar/../../../src/misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/examples/widgets/calendar/../../../src/misc/lv_types.h \
  ../grapics/examples/widgets/calendar/../../../src/misc/lv_timer.h \
  ../grapics/examples/widgets/calendar/../../../src/misc/../hal/lv_hal_tick.h \
@@ -258,7 +258,7 @@ grapics/examples/widgets/calendar/lv_example_calendar_1.o: \
 ../grapics/examples/widgets/calendar/../../../src/misc/lv_log.h:
 ../grapics/examples/widgets/calendar/../../../src/misc/../lv_conf_internal.h:
 ../grapics/examples/widgets/calendar/../../../src/misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/examples/widgets/calendar/../../../src/misc/lv_types.h:
 ../grapics/examples/widgets/calendar/../../../src/misc/lv_timer.h:
 ../grapics/examples/widgets/calendar/../../../src/misc/../hal/lv_hal_tick.h:

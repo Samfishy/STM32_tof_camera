@@ -4,7 +4,7 @@ grapics/src/extra/widgets/keyboard/lv_keyboard.o: \
  ../grapics/src/extra/widgets/keyboard/../../../widgets/lv_btnmatrix.h \
  ../grapics/src/extra/widgets/keyboard/../../../widgets/../lv_conf_internal.h \
  ../grapics/src/extra/widgets/keyboard/../../../widgets/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/extra/widgets/keyboard/../../../widgets/../core/lv_obj.h \
  ../grapics/src/extra/widgets/keyboard/../../../widgets/../core/../lv_conf_internal.h \
  ../grapics/src/extra/widgets/keyboard/../../../widgets/../core/../misc/lv_style.h \
@@ -96,7 +96,7 @@ grapics/src/extra/widgets/keyboard/lv_keyboard.o: \
 ../grapics/src/extra/widgets/keyboard/../../../widgets/lv_btnmatrix.h:
 ../grapics/src/extra/widgets/keyboard/../../../widgets/../lv_conf_internal.h:
 ../grapics/src/extra/widgets/keyboard/../../../widgets/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/extra/widgets/keyboard/../../../widgets/../core/lv_obj.h:
 ../grapics/src/extra/widgets/keyboard/../../../widgets/../core/../lv_conf_internal.h:
 ../grapics/src/extra/widgets/keyboard/../../../widgets/../core/../misc/lv_style.h:

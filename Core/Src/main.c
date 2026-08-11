@@ -79,7 +79,7 @@ uint8_t                 status, loop, isAlive, isReady, i,img_data;
 VL53L5CX_Configuration  Dev;            /* Sensor configuration */
 VL53L5CX_ResultsData    Results;        /* Results data from VL53L5CX */
 
-uint16_t map[1024];
+lv_color_t map[1024];
 
 int exti_flag = 100;
 int x1= 0 , high_ready = 0, low_ready = 0;
@@ -189,101 +189,59 @@ void bilinear_8x8_to_16x16_q15(void)
 }
 
 // Array of 30 colors sampled from Birtmap_color.png, converted to RGB565
-const uint16_t heatmap_30[30] =
-{
-    0x3000, //  0 dark red
-    0x5000, //  1
-    0x7800, //  2
-    0xA000, //  3
-    0xC800, //  4
-    0xF800, //  5 red
-    0xFA00, //  6 red-orange
-    0xFC00, //  7 orange
-    0xFDE0, //  8
-    0xFFE0, //  9 yellow
-    0xDFE0, // 10 yellow-green
-    0x9FE0, // 11
-    0x5FE0, // 12
-    0x07E0, // 13 green
-    0x07E8, // 14 green-cyan
-    0x07F0, // 15
-    0x07F8, // 16
-    0x07FF, // 17 cyan
-    0x05FF, // 18
-    0x03FF, // 19
-    0x01FF, // 20
-    0x001F, // 21 blue
-    0x0018, // 22
-    0x0012, // 23
-    0x000D, // 24
-    0x0008, // 25 dark blue
-    0x0006, // 26
-    0x0004, // 27
-    0x0002, // 28
-    0x0000  // 29 black
+
+const uint8_t heatmap_colors[30][3] = {
+    // {R,   G,   B}
+    {49,   0,   0},   //  0: 0x3000 dark red
+    {82,   0,   0},   //  1: 0x5000
+    {123,  0,   0},   //  2: 0x7800
+    {165,  0,   0},   //  3: 0xA000
+    {206,  0,   0},   //  4: 0xC800
+    {255,  0,   0},   //  5: 0xF800 red
+    {255, 65,   0},   //  6: 0xFA00 red-orange
+    {255, 130,  0},   //  7: 0xFC00 orange
+    {255, 190,  0},   //  8: 0xFDE0
+    {255, 255,  0},   //  9: 0xFFE0 yellow
+    {222, 255,  0},   // 10: 0xDFE0 yellow-green
+    {156, 255,  0},   // 11: 0x9FE0
+    {90,  255,  0},   // 12: 0x5FE0
+    {0,   255,  0},   // 13: 0x07E0 green
+    {0,   255, 66},   // 14: 0x07E8 green-cyan
+    {0,   255, 132},  // 15: 0x07F0
+    {0,   255, 197},  // 16: 0x07F8
+    {0,   255, 255},  // 17: 0x07FF cyan
+    {0,   174, 255},  // 18: 0x05FF
+    {0,   125, 255},  // 19: 0x03FF
+    {0,   61,  255},  // 20: 0x01FF
+    {0,   0,   255},  // 21: 0x001F blue
+    {0,   0,   197},  // 22: 0x0018
+    {0,   0,   148},  // 23: 0x0012
+    {0,   0,   107},  // 24: 0x000D
+    {0,   0,   66},   // 25: 0x0008 dark blue
+    {0,   0,   49},   // 26: 0x0006
+    {0,   0,   33},   // 27: 0x0004
+    {0,   0,   16},   // 28: 0x0002
+    {0,   0,   0}     // 29: 0x0000 black
 };
 
 void heatmap_plotting(int dis, int i)
 {
-    // Prevent negative distances from causing an out-of-bounds error
     if (dis < 0) {
         dis = 0;
     }
-
-    // Calculate the array index using integer division
     int index = dis / 10;
 
-    // Cap the index at 29 for any distance 290 or greater
     if (index > 29) {
         index = 29;
     }
 
-    // Assign the color.
-    // Smallest distances map to index 0 (Red in Birtmap_color.png)
-    map[i] = heatmap_30[index];
-}
+    uint8_t r=0,g=0,b=0;
 
-void res_calc2()
-{
-    if(interpolation == 1)
-    {
-        if(mode == 0) { OUT_H = 8; OUT_W = 8; strcpy(view_type_str, "88M"); strcpy(page_num_str, "1IN"); }
-        else { OUT_H = 4; OUT_W = 4; strcpy(view_type_str, "44M"); strcpy(page_num_str, "1IN"); }
-    }
-    else if(interpolation == 2)
-    {
-        if(mode == 0) { OUT_H = 16; OUT_W = 16; strcpy(view_type_str, "88M"); strcpy(page_num_str, "2IN"); }
-        else { OUT_H = 8; OUT_W = 8; strcpy(view_type_str, "44M"); strcpy(page_num_str, "2IN"); }
-    }
-    else if(interpolation == 4)
-    {
-        if(mode == 0) { OUT_H = 32; OUT_W = 32; strcpy(view_type_str, "88M"); strcpy(page_num_str, "4IN"); }
-        else { OUT_H = 16; OUT_W = 16; strcpy(view_type_str, "44M"); strcpy(page_num_str, "2IN"); }
-    }
-    flag_update_labels = true;
-}
-
-void res_calc()
-{
-    if(r_flag == 0)
-    {
-        r_flag = 1; interpolation = 1;
-        if(mode == 0) { OUT_H = 8; OUT_W = 8; strcpy(view_type_str, "88M"); strcpy(page_num_str, "1IN"); }
-        else { OUT_H = 4; OUT_W = 4; strcpy(view_type_str, "44M"); strcpy(page_num_str, "1IN"); }
-    }
-    else if(r_flag == 1)
-    {
-        r_flag = 2; interpolation = 2;
-        if(mode == 0) { OUT_H = 16; OUT_W = 16; strcpy(view_type_str, "88M"); strcpy(page_num_str, "2IN"); }
-        else { OUT_H = 8; OUT_W = 8; strcpy(view_type_str, "44M"); strcpy(page_num_str, "2IN"); }
-    }
-    else if(r_flag == 2)
-    {
-        r_flag = 0; interpolation = 4;
-        if(mode == 0) { OUT_H = 32; OUT_W = 32; strcpy(view_type_str, "88M"); strcpy(page_num_str, "4IN"); }
-        else { OUT_H = 16; OUT_W = 16; strcpy(view_type_str, "44M"); strcpy(page_num_str, "4IN"); }
-    }
-    flag_update_labels = true;
+    r = heatmap_colors[index][0];
+    g = heatmap_colors[index][1];
+    b = heatmap_colors[index][2];
+    lv_color_t color = lv_color_make(r, g, b);
+    map[i] = color;
 }
 
 /// Draw directly to the LVGL Canvas Buffer
@@ -299,7 +257,7 @@ void img_print_lvgl(int interp, int md, int16_t data[])
 
     for(int i = 0; i < total_sq; i++)
     {
-        int dis = (int)(data[i]) / 10;
+        int dis = (int)(data[i])/10;
         heatmap_plotting(dis, i);
     }
 
@@ -319,13 +277,8 @@ void img_print_lvgl(int interp, int md, int16_t data[])
             int x = ((total - 1) - row) * rec_use;
             int y = col * rec_use;
 
-            // NOTE: If the image now looks correct horizontally but is UPSIDE DOWN,
-            // comment out the two lines above and use these two instead:
-            // int x = row * rec_use;
-            // int y = ((total - 1) - col) * rec_use;
-
             // Assign the 16-bit RGB565 color to the LVGL color union
-            rect_dsc.bg_color.full = map[idx];
+            rect_dsc.bg_color = map[idx];
 
             // Draw rectangle to canvas
             lv_canvas_draw_rect(objects.heat_map, x, y, rec_use, rec_use, &rect_dsc);

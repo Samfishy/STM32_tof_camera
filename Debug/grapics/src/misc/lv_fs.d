@@ -1,7 +1,7 @@
 grapics/src/misc/lv_fs.o: ../grapics/src/misc/lv_fs.c \
  ../grapics/src/misc/lv_fs.h ../grapics/src/misc/../lv_conf_internal.h \
  ../grapics/src/misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/misc/../misc/lv_assert.h \
  ../grapics/src/misc/../misc/../lv_conf_internal.h \
  ../grapics/src/misc/../misc/lv_log.h \
@@ -30,7 +30,7 @@ grapics/src/misc/lv_fs.o: ../grapics/src/misc/lv_fs.c \
 ../grapics/src/misc/lv_fs.h:
 ../grapics/src/misc/../lv_conf_internal.h:
 ../grapics/src/misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/misc/../misc/lv_assert.h:
 ../grapics/src/misc/../misc/../lv_conf_internal.h:
 ../grapics/src/misc/../misc/lv_log.h:

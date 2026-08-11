@@ -2,7 +2,7 @@ grapics/src/widgets/lv_btn.o: ../grapics/src/widgets/lv_btn.c \
  ../grapics/src/widgets/lv_btn.h \
  ../grapics/src/widgets/../lv_conf_internal.h \
  ../grapics/src/widgets/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/widgets/../core/lv_obj.h \
  ../grapics/src/widgets/../core/../lv_conf_internal.h \
  ../grapics/src/widgets/../core/../misc/lv_style.h \
@@ -88,7 +88,7 @@ grapics/src/widgets/lv_btn.o: ../grapics/src/widgets/lv_btn.c \
 ../grapics/src/widgets/lv_btn.h:
 ../grapics/src/widgets/../lv_conf_internal.h:
 ../grapics/src/widgets/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/widgets/../core/lv_obj.h:
 ../grapics/src/widgets/../core/../lv_conf_internal.h:
 ../grapics/src/widgets/../core/../misc/lv_style.h:

@@ -5,7 +5,7 @@ grapics/examples/layouts/grid/lv_example_grid_2.o: \
  ../grapics/examples/layouts/grid/../../../src/misc/lv_log.h \
  ../grapics/examples/layouts/grid/../../../src/misc/../lv_conf_internal.h \
  ../grapics/examples/layouts/grid/../../../src/misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/examples/layouts/grid/../../../src/misc/lv_types.h \
  ../grapics/examples/layouts/grid/../../../src/misc/lv_timer.h \
  ../grapics/examples/layouts/grid/../../../src/misc/../hal/lv_hal_tick.h \
@@ -258,7 +258,7 @@ grapics/examples/layouts/grid/lv_example_grid_2.o: \
 ../grapics/examples/layouts/grid/../../../src/misc/lv_log.h:
 ../grapics/examples/layouts/grid/../../../src/misc/../lv_conf_internal.h:
 ../grapics/examples/layouts/grid/../../../src/misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/examples/layouts/grid/../../../src/misc/lv_types.h:
 ../grapics/examples/layouts/grid/../../../src/misc/lv_timer.h:
 ../grapics/examples/layouts/grid/../../../src/misc/../hal/lv_hal_tick.h:

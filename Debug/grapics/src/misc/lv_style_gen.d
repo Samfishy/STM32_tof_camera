@@ -2,7 +2,7 @@ grapics/src/misc/lv_style_gen.o: ../grapics/src/misc/lv_style_gen.c \
  ../grapics/src/misc/lv_style.h ../grapics/src/misc/../font/lv_font.h \
  ../grapics/src/misc/../font/../lv_conf_internal.h \
  ../grapics/src/misc/../font/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/misc/../font/lv_symbol_def.h \
  ../grapics/src/misc/../font/../misc/lv_area.h \
  ../grapics/src/misc/../font/../misc/../lv_conf_internal.h \
@@ -17,7 +17,7 @@ grapics/src/misc/lv_style_gen.o: ../grapics/src/misc/lv_style_gen.c \
 ../grapics/src/misc/../font/lv_font.h:
 ../grapics/src/misc/../font/../lv_conf_internal.h:
 ../grapics/src/misc/../font/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/misc/../font/lv_symbol_def.h:
 ../grapics/src/misc/../font/../misc/lv_area.h:
 ../grapics/src/misc/../font/../misc/../lv_conf_internal.h:

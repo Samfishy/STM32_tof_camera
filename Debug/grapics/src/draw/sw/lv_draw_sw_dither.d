@@ -5,7 +5,7 @@ grapics/src/draw/sw/lv_draw_sw_dither.o: \
  ../grapics/src/draw/sw/../../core/../misc/lv_area.h \
  ../grapics/src/draw/sw/../../core/../misc/../lv_conf_internal.h \
  ../grapics/src/draw/sw/../../core/../misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/draw/sw/lv_draw_sw_gradient.h \
  ../grapics/src/draw/sw/../../misc/lv_color.h \
  ../grapics/src/draw/sw/../../misc/../lv_conf_internal.h \
@@ -31,7 +31,7 @@ grapics/src/draw/sw/lv_draw_sw_dither.o: \
 ../grapics/src/draw/sw/../../core/../misc/lv_area.h:
 ../grapics/src/draw/sw/../../core/../misc/../lv_conf_internal.h:
 ../grapics/src/draw/sw/../../core/../misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/draw/sw/lv_draw_sw_gradient.h:
 ../grapics/src/draw/sw/../../misc/lv_color.h:
 ../grapics/src/draw/sw/../../misc/../lv_conf_internal.h:

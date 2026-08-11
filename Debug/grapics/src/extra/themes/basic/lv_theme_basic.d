@@ -5,7 +5,7 @@ grapics/src/extra/themes/basic/lv_theme_basic.o: \
  ../grapics/src/extra/themes/basic/../../../../src/misc/lv_log.h \
  ../grapics/src/extra/themes/basic/../../../../src/misc/../lv_conf_internal.h \
  ../grapics/src/extra/themes/basic/../../../../src/misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/extra/themes/basic/../../../../src/misc/lv_types.h \
  ../grapics/src/extra/themes/basic/../../../../src/misc/lv_timer.h \
  ../grapics/src/extra/themes/basic/../../../../src/misc/../hal/lv_hal_tick.h \
@@ -241,7 +241,7 @@ grapics/src/extra/themes/basic/lv_theme_basic.o: \
 ../grapics/src/extra/themes/basic/../../../../src/misc/lv_log.h:
 ../grapics/src/extra/themes/basic/../../../../src/misc/../lv_conf_internal.h:
 ../grapics/src/extra/themes/basic/../../../../src/misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/extra/themes/basic/../../../../src/misc/lv_types.h:
 ../grapics/src/extra/themes/basic/../../../../src/misc/lv_timer.h:
 ../grapics/src/extra/themes/basic/../../../../src/misc/../hal/lv_hal_tick.h:

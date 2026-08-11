@@ -4,7 +4,7 @@ grapics/src/draw/renesas/lv_gpu_d2_draw_label.o: \
  ../grapics/src/draw/renesas/../../draw/../misc/lv_bidi.h \
  ../grapics/src/draw/renesas/../../draw/../misc/../lv_conf_internal.h \
  ../grapics/src/draw/renesas/../../draw/../misc/../lv_conf_kconfig.h \
- /home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h \
  ../grapics/src/draw/renesas/../../draw/../misc/lv_txt.h \
  ../grapics/src/draw/renesas/../../draw/../misc/lv_area.h \
  ../grapics/src/draw/renesas/../../draw/../misc/../font/lv_font.h \
@@ -93,7 +93,7 @@ grapics/src/draw/renesas/lv_gpu_d2_draw_label.o: \
 ../grapics/src/draw/renesas/../../draw/../misc/lv_bidi.h:
 ../grapics/src/draw/renesas/../../draw/../misc/../lv_conf_internal.h:
 ../grapics/src/draw/renesas/../../draw/../misc/../lv_conf_kconfig.h:
-/home/samfishy/Documents/STM_Workspace/TFT_Display_F411/grapics/lv_conf.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
 ../grapics/src/draw/renesas/../../draw/../misc/lv_txt.h:
 ../grapics/src/draw/renesas/../../draw/../misc/lv_area.h:
 ../grapics/src/draw/renesas/../../draw/../misc/../font/lv_font.h:
