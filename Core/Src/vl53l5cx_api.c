@@ -14,7 +14,9 @@
 #include <string.h>
 #include "vl53l5cx_api.h"
 #include "vl53l5cx_buffers.h"
+#include "main.h"
 
+extern I2C_HandleTypeDef 	hi2c2;
 /**
  * @brief Inner function, not available outside this file. This function is used
  * to wait for an answer from VL53L5CX sensor.
@@ -705,175 +707,201 @@ uint8_t vl53l5cx_check_data_ready(
 	return status;
 }
 
+extern uint8_t Data_ready;
+extern uint8_t rdMutiDMAflag;
+
+extern uint16_t address_dma ;
+extern uint8_t *p_values_dma;
+extern uint32_t size_dma;
+
+VL53L5CX_Configuration *p_dev;
+VL53L5CX_ResultsData *p_results;
+
 uint8_t vl53l5cx_get_ranging_data(
-		VL53L5CX_Configuration		*p_dev,
-		VL53L5CX_ResultsData		*p_results)
+		VL53L5CX_Configuration		*p_dev_dma,
+		VL53L5CX_ResultsData		*p_results_dma)
 {
+	p_dev = p_dev_dma;
+	p_results = p_results_dma;
+
 	uint8_t status = VL53L5CX_STATUS_OK;
-	union Block_header *bh_ptr;
-	uint16_t header_id, footer_id;
-	uint32_t i, j, msize;
 
-	status |= VL53L5CX_RdMulti(&(p_dev->platform), 0x0,
+
+	status |= VL53L5CX_RdMulti_DMA(&(p_dev->platform), 0x0,
 			p_dev->temp_buffer, p_dev->data_read_size);
-	p_dev->streamcount = p_dev->temp_buffer[0];
-	VL53L5CX_SwapBuffer(p_dev->temp_buffer, (uint16_t)p_dev->data_read_size);
-
-	/* Start conversion at position 16 to avoid headers */
-	for (i = (uint32_t)16; i 
-             < (uint32_t)p_dev->data_read_size; i+=(uint32_t)4)
-	{
-		bh_ptr = (union Block_header *)&(p_dev->temp_buffer[i]);
-		if ((bh_ptr->type > (uint32_t)0x1) 
-                    && (bh_ptr->type < (uint32_t)0xd))
-		{
-			msize = bh_ptr->type * bh_ptr->size;
-		}
-		else
-		{
-			msize = bh_ptr->size;
-		}
-
-		switch(bh_ptr->idx){
-			case VL53L5CX_METADATA_IDX:
-				p_results->silicon_temp_degc =
-						(int8_t)p_dev->temp_buffer[i + (uint32_t)12];
-				break;
-
-#ifndef VL53L5CX_DISABLE_AMBIENT_PER_SPAD
-			case VL53L5CX_AMBIENT_RATE_IDX:
-				(void)memcpy(p_results->ambient_per_spad,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_NB_SPADS_ENABLED
-			case VL53L5CX_SPAD_COUNT_IDX:
-				(void)memcpy(p_results->nb_spads_enabled,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_NB_TARGET_DETECTED
-			case VL53L5CX_NB_TARGET_DETECTED_IDX:
-				(void)memcpy(p_results->nb_target_detected,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_SIGNAL_PER_SPAD
-			case VL53L5CX_SIGNAL_RATE_IDX:
-				(void)memcpy(p_results->signal_per_spad,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_RANGE_SIGMA_MM
-			case VL53L5CX_RANGE_SIGMA_MM_IDX:
-				(void)memcpy(p_results->range_sigma_mm,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_DISTANCE_MM
-			case VL53L5CX_DISTANCE_IDX:
-				(void)memcpy(p_results->distance_mm,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_REFLECTANCE_PERCENT
-			case VL53L5CX_REFLECTANCE_EST_PC_IDX:
-				(void)memcpy(p_results->reflectance,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_TARGET_STATUS
-			case VL53L5CX_TARGET_STATUS_IDX:
-				(void)memcpy(p_results->target_status,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-#ifndef VL53L5CX_DISABLE_MOTION_INDICATOR
-			case VL53L5CX_MOTION_DETEC_IDX:
-				(void)memcpy(&p_results->motion_indicator,
-				&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
-				break;
-#endif
-			default:
-				break;
-		}
-		i += msize;
-	}
-
-#ifndef VL53L5CX_USE_RAW_FORMAT
-
-	/* Convert data into their real format */
-#ifndef VL53L5CX_DISABLE_AMBIENT_PER_SPAD
-	for(i = 0; i < (uint32_t)VL53L5CX_RESOLUTION_8X8; i++)
-	{
-		p_results->ambient_per_spad[i] /= (uint32_t)2048;
-	}
-#endif
-
-	for(i = 0; i < (uint32_t)(VL53L5CX_RESOLUTION_8X8
-			*VL53L5CX_NB_TARGET_PER_ZONE); i++)
-	{
-#ifndef VL53L5CX_DISABLE_DISTANCE_MM
-		p_results->distance_mm[i] /= 4;
-		if(p_results->distance_mm[i] < 0)
-		{
-			p_results->distance_mm[i] = 0;
-		}
-#endif
-#ifndef VL53L5CX_DISABLE_REFLECTANCE_PERCENT
-		p_results->reflectance[i] /= (uint8_t)2;
-#endif
-#ifndef VL53L5CX_DISABLE_RANGE_SIGMA_MM
-		p_results->range_sigma_mm[i] /= (uint16_t)128;
-#endif
-#ifndef VL53L5CX_DISABLE_SIGNAL_PER_SPAD
-		p_results->signal_per_spad[i] /= (uint32_t)2048;
-#endif
-	}
-
-	/* Set target status to 255 if no target is detected for this zone */
-#ifndef VL53L5CX_DISABLE_NB_TARGET_DETECTED
-	for(i = 0; i < (uint32_t)VL53L5CX_RESOLUTION_8X8; i++)
-	{
-		if(p_results->nb_target_detected[i] == (uint8_t)0){
-			for(j = 0; j < (uint32_t)
-				VL53L5CX_NB_TARGET_PER_ZONE; j++)
-			{
-#ifndef VL53L5CX_DISABLE_TARGET_STATUS
-				p_results->target_status
-				[((uint32_t)VL53L5CX_NB_TARGET_PER_ZONE
-					*(uint32_t)i) + j]=(uint8_t)255;
-#endif
-			}
-		}
-	}
-#endif
-
-#ifndef VL53L5CX_DISABLE_MOTION_INDICATOR
-	for(i = 0; i < (uint32_t)32; i++)
-	{
-		p_results->motion_indicator.motion[i] /= (uint32_t)65535;
-	}
-#endif
-
-#endif
-
-	/* Check if footer id and header id are matching. This allows to detect
-	 * corrupted frames */
-	header_id = ((uint16_t)(p_dev->temp_buffer[0x8])<<8) & 0xFF00U;
-	header_id |= ((uint16_t)(p_dev->temp_buffer[0x9])) & 0x00FFU;
-
-	footer_id = ((uint16_t)(p_dev->temp_buffer[p_dev->data_read_size
-		- (uint32_t)4]) << 8) & 0xFF00U;
-	footer_id |= ((uint16_t)(p_dev->temp_buffer[p_dev->data_read_size
-		- (uint32_t)3])) & 0xFFU;
-
-	if(header_id != footer_id)
-	{
-		status |= VL53L5CX_STATUS_CORRUPTED_FRAME;
-	}
 
 	return status;
+}
+
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	if(rdMutiDMAflag == 1)
+		{
+			rdMutiDMAflag = 0;
+
+			union Block_header *bh_ptr;
+					uint16_t header_id, footer_id;
+					uint32_t i, j, msize;
+
+			p_dev->streamcount = p_dev->temp_buffer[0];
+				VL53L5CX_SwapBuffer(p_dev->temp_buffer, (uint16_t)p_dev->data_read_size);
+
+				/* Start conversion at position 16 to avoid headers */
+				for (i = (uint32_t)16; i
+			             < (uint32_t)p_dev->data_read_size; i+=(uint32_t)4)
+				{
+					bh_ptr = (union Block_header *)&(p_dev->temp_buffer[i]);
+					if ((bh_ptr->type > (uint32_t)0x1)
+			                    && (bh_ptr->type < (uint32_t)0xd))
+					{
+						msize = bh_ptr->type * bh_ptr->size;
+					}
+					else
+					{
+						msize = bh_ptr->size;
+					}
+
+					switch(bh_ptr->idx){
+						case VL53L5CX_METADATA_IDX:
+							p_results->silicon_temp_degc =
+									(int8_t)p_dev->temp_buffer[i + (uint32_t)12];
+							break;
+
+			#ifndef VL53L5CX_DISABLE_AMBIENT_PER_SPAD
+						case VL53L5CX_AMBIENT_RATE_IDX:
+							(void)memcpy(p_results->ambient_per_spad,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_NB_SPADS_ENABLED
+						case VL53L5CX_SPAD_COUNT_IDX:
+							(void)memcpy(p_results->nb_spads_enabled,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_NB_TARGET_DETECTED
+						case VL53L5CX_NB_TARGET_DETECTED_IDX:
+							(void)memcpy(p_results->nb_target_detected,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_SIGNAL_PER_SPAD
+						case VL53L5CX_SIGNAL_RATE_IDX:
+							(void)memcpy(p_results->signal_per_spad,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_RANGE_SIGMA_MM
+						case VL53L5CX_RANGE_SIGMA_MM_IDX:
+							(void)memcpy(p_results->range_sigma_mm,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_DISTANCE_MM
+						case VL53L5CX_DISTANCE_IDX:
+							(void)memcpy(p_results->distance_mm,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_REFLECTANCE_PERCENT
+						case VL53L5CX_REFLECTANCE_EST_PC_IDX:
+							(void)memcpy(p_results->reflectance,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_TARGET_STATUS
+						case VL53L5CX_TARGET_STATUS_IDX:
+							(void)memcpy(p_results->target_status,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+			#ifndef VL53L5CX_DISABLE_MOTION_INDICATOR
+						case VL53L5CX_MOTION_DETEC_IDX:
+							(void)memcpy(&p_results->motion_indicator,
+							&(p_dev->temp_buffer[i + (uint32_t)4]), msize);
+							break;
+			#endif
+						default:
+							break;
+					}
+					i += msize;
+				}
+
+			#ifndef VL53L5CX_USE_RAW_FORMAT
+
+				/* Convert data into their real format */
+			#ifndef VL53L5CX_DISABLE_AMBIENT_PER_SPAD
+				for(i = 0; i < (uint32_t)VL53L5CX_RESOLUTION_8X8; i++)
+				{
+					p_results->ambient_per_spad[i] /= (uint32_t)2048;
+				}
+			#endif
+
+				for(i = 0; i < (uint32_t)(VL53L5CX_RESOLUTION_8X8
+						*VL53L5CX_NB_TARGET_PER_ZONE); i++)
+				{
+			#ifndef VL53L5CX_DISABLE_DISTANCE_MM
+					p_results->distance_mm[i] /= 4;
+					if(p_results->distance_mm[i] < 0)
+					{
+						p_results->distance_mm[i] = 0;
+					}
+			#endif
+			#ifndef VL53L5CX_DISABLE_REFLECTANCE_PERCENT
+					p_results->reflectance[i] /= (uint8_t)2;
+			#endif
+			#ifndef VL53L5CX_DISABLE_RANGE_SIGMA_MM
+					p_results->range_sigma_mm[i] /= (uint16_t)128;
+			#endif
+			#ifndef VL53L5CX_DISABLE_SIGNAL_PER_SPAD
+					p_results->signal_per_spad[i] /= (uint32_t)2048;
+			#endif
+				}
+
+				/* Set target status to 255 if no target is detected for this zone */
+			#ifndef VL53L5CX_DISABLE_NB_TARGET_DETECTED
+				for(i = 0; i < (uint32_t)VL53L5CX_RESOLUTION_8X8; i++)
+				{
+					if(p_results->nb_target_detected[i] == (uint8_t)0){
+						for(j = 0; j < (uint32_t)
+							VL53L5CX_NB_TARGET_PER_ZONE; j++)
+						{
+			#ifndef VL53L5CX_DISABLE_TARGET_STATUS
+							p_results->target_status
+							[((uint32_t)VL53L5CX_NB_TARGET_PER_ZONE
+								*(uint32_t)i) + j]=(uint8_t)255;
+			#endif
+						}
+					}
+				}
+			#endif
+
+			#ifndef VL53L5CX_DISABLE_MOTION_INDICATOR
+				for(i = 0; i < (uint32_t)32; i++)
+				{
+					p_results->motion_indicator.motion[i] /= (uint32_t)65535;
+				}
+			#endif
+
+			#endif
+
+				/* Check if footer id and header id are matching. This allows to detect
+				 * corrupted frames */
+				header_id = ((uint16_t)(p_dev->temp_buffer[0x8])<<8) & 0xFF00U;
+				header_id |= ((uint16_t)(p_dev->temp_buffer[0x9])) & 0x00FFU;
+
+				footer_id = ((uint16_t)(p_dev->temp_buffer[p_dev->data_read_size
+					- (uint32_t)4]) << 8) & 0xFF00U;
+				footer_id |= ((uint16_t)(p_dev->temp_buffer[p_dev->data_read_size
+					- (uint32_t)3])) & 0xFFU;
+
+				if(header_id != footer_id)
+				{
+					//status |= VL53L5CX_STATUS_CORRUPTED_FRAME;
+				}
+
+			Data_ready = 1;
+		}
 }
 
 uint8_t vl53l5cx_get_resolution(

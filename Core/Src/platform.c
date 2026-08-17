@@ -65,6 +65,8 @@
 
 extern I2C_HandleTypeDef 	hi2c2;
 
+uint8_t rdMutiDMAflag = 0;
+uint8_t Data_ready = 0;
 
 uint16_t address_dma ;
 uint8_t *p_values_dma;
@@ -150,7 +152,9 @@ uint8_t VL53L5CX_RdMulti_DMA(
 	p_values_dma = p_values;
 	size_dma = size;
 
-	HAL_I2C_Master_Transmit_DMA(&hi2c2, p_platform->address, data_write, 2);
+	HAL_I2C_Master_Transmit(&hi2c2, p_platform->address, data_write, 2,100);
+	HAL_I2C_Master_Receive_DMA(&hi2c2, p_platform->address, p_values, size);
+	rdMutiDMAflag = 1;
 
 	status = 0;
 	return status;
@@ -198,9 +202,4 @@ uint8_t VL53L5CX_WaitMs(
 {
 	HAL_Delay(TimeMs);
 	return 0;
-}
-
-void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
-{
-	HAL_I2C_Master_Receive_DMA(&hi2c2, address_dma, p_values_dma, size_dma);
 }

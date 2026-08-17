@@ -1,0 +1,10 @@
+grapics/src/draw/sdl/lv_draw_sdl_stack_blur.o: \
+ ../grapics/src/draw/sdl/lv_draw_sdl_stack_blur.c \
+ ../grapics/src/draw/sdl/lv_draw_sdl_stack_blur.h \
+ ../grapics/src/draw/sdl/../../lv_conf_internal.h \
+ ../grapics/src/draw/sdl/../../lv_conf_kconfig.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h
+../grapics/src/draw/sdl/lv_draw_sdl_stack_blur.h:
+../grapics/src/draw/sdl/../../lv_conf_internal.h:
+../grapics/src/draw/sdl/../../lv_conf_kconfig.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/lv_conf.h:
