@@ -1,9 +1,0 @@
-../Core/Src/platform.c:73:9:VL53L5CX_RdByte	40	static
-../Core/Src/platform.c:91:9:VL53L5CX_WrByte	24	static
-../Core/Src/platform.c:107:9:VL53L5CX_WrMulti	24	static
-../Core/Src/platform.c:118:9:VL53L5CX_RdMulti	40	static
-../Core/Src/platform.c:138:9:VL53L5CX_RdMulti_DMA	16	static
-../Core/Src/platform.c:159:9:VL53L5CX_Reset_Sensor	8	static
-../Core/Src/platform.c:176:6:VL53L5CX_SwapBuffer	0	static
-../Core/Src/platform.c:195:9:VL53L5CX_WaitMs	8	static
-../Core/Src/platform.c:203:6:HAL_I2C_MasterTxCpltCallback	8	static

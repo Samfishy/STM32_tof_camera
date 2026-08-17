@@ -27,6 +27,10 @@ Core/Src \
 Core/Startup \
 Drivers/CMSIS/CMSIS_DSP/Source/InterpolationFunctions \
 Drivers/STM32F4xx_HAL_Driver/Src \
+FreeRTOS/FreeRTOS-Kernel \
+FreeRTOS/FreeRTOS-Kernel/portable/Common \
+FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F \
+FreeRTOS/FreeRTOS-Kernel/portable/MemMang \
 grapics/demos/benchmark/assets \
 grapics/demos/benchmark \
 grapics/demos/keypad_encoder \

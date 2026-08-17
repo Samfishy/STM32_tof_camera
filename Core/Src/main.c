@@ -60,6 +60,7 @@ void tof_init(void);
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c2;
+DMA_HandleTypeDef hdma_i2c2_rx;
 
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi4;
@@ -101,7 +102,7 @@ static lv_disp_drv_t disp_drv;
 static lv_disp_draw_buf_t draw_buf;
 
 // The actual pixel array (use lv_color_t for v8, not uint8_t)
-static lv_color_t buf1[160 * 20];
+static lv_color_t buf1[160];
 
 q15_t in_q15[64];
 
@@ -132,7 +133,9 @@ static void MX_SPI4_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
-int flag_tim2 = 0;
+int flag_tim2 = 0, tof_ini =0;
+extern uint8_t Data_ready;
+extern uint8_t rdMutiDMAflag;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -171,6 +174,7 @@ void bilinear_8x8_to_16x16_q15(void)
     {
         q31_t src_y = ((((q31_t)y << 20) + (1 << 19)) * IN_H) / OUT_H - (1 << 19);
 
+        // Clamp Y to prevent reading past the top or bottom edges
         if (src_y < 0) src_y = 0;
         if (src_y > max_y) src_y = max_y;
 
@@ -178,6 +182,7 @@ void bilinear_8x8_to_16x16_q15(void)
         {
             q31_t src_x = ((((q31_t)x << 20) + (1 << 19)) * IN_W) / OUT_W - (1 << 19);
 
+            // Clamp X to prevent reading past the right edge (which prevents left-edge mirroring)
             if (src_x < 0) src_x = 0;
             if (src_x > max_x) src_x = max_x;
 
@@ -187,7 +192,6 @@ void bilinear_8x8_to_16x16_q15(void)
 }
 
 // Array of 30 colors sampled from Birtmap_color.png, converted to RGB565
-
 const uint8_t heatmap_colors[30][3] = {
     // {R,   G,   B}
     {49,   0,   0},   //  0: 0x3000 dark red
@@ -255,7 +259,7 @@ void img_print_lvgl(int interp, int md, int16_t data[])
 
     for(int i = 0; i < total_sq; i++)
     {
-        int dis = (int)(data[i])/10;
+        int dis = (int)(data[i]) / 10;
         heatmap_plotting(dis, i);
     }
 
@@ -274,6 +278,11 @@ void img_print_lvgl(int interp, int md, int16_t data[])
 
             int x = ((total - 1) - row) * rec_use;
             int y = col * rec_use;
+
+            // NOTE: If the image now looks correct horizontally but is UPSIDE DOWN,
+            // comment out the two lines above and use these two instead:
+            // int x = row * rec_use;
+            // int y = ((total - 1) - col) * rec_use;
 
             // Assign the 16-bit RGB565 color to the LVGL color union
             rect_dsc.bg_color = map[idx];
@@ -375,7 +384,7 @@ int main(void)
   ST7735_FillScreen(ST7735_BLACK);
 
   lv_init();
-  lv_disp_draw_buf_init(&draw_buf, buf1, NULL, 160 * 20);
+  lv_disp_draw_buf_init(&draw_buf, buf1, NULL, 160);
   lv_disp_drv_init(&disp_drv);
 
   disp_drv.hor_res = 160;
@@ -392,8 +401,6 @@ int main(void)
   loadScreen(SCREEN_ID_LIVE_VIEW_PAGE);
   lv_timer_handler(); // Force render of spinner page
 
-
-
   // Initialize standard hardware
    W25_rst();
    ID = W25_devID();
@@ -401,6 +408,7 @@ int main(void)
    // Initialize LVGL and Display (Replace with your actual display port init)
    // Init Sensor
    tof_init();
+   tof_ini = 1;
    HAL_Delay(100);
 
    // Explicitly link the C buffer to the EEZ-generated Canvas
@@ -422,7 +430,7 @@ int main(void)
     // Switch to heatmap page after initialization "image_04a17d.png"
     loadScreen(SCREEN_ID_HEAT_MAP_PAGE);
     lv_timer_handler();
-   /* USER CODE END 2 */
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -435,10 +443,13 @@ int main(void)
               if (flag_update_heatmap)
               {
                   flag_update_heatmap = false;
-                  if(flag_use_rdata) {
+                  if(flag_use_rdata)
+                  {
                       img_print_lvgl(interpolation_menu, mode_menu, rData_int);
-                  } else {
-                      if(interpolation != 1) {
+                  } else
+                  {
+                      if(interpolation != 1)
+                      {
                           img_print_lvgl(interpolation, mode, out_q15);
                       } else {
                           img_print_lvgl(interpolation, mode, Results.distance_mm);
@@ -770,8 +781,12 @@ static void MX_DMA_Init(void)
 
   /* DMA controller clock enable */
   __HAL_RCC_DMA2_CLK_ENABLE();
+  __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA1_Stream2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, 0, 1);
+  HAL_NVIC_EnableIRQ(DMA1_Stream2_IRQn);
   /* DMA2_Stream1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 1, 1);
   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
@@ -919,58 +934,58 @@ void tof_init()
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    if(htim->Instance == TIM4)
-    {
-        if(exti_flag == 0)
-        {
-            HAL_NVIC_EnableIRQ(EXTI0_IRQn);
-            HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-        }
-        else if(exti_flag == 3)
-        {
-            HAL_NVIC_EnableIRQ(EXTI3_IRQn);
-            HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-        }
-        else if(exti_flag == 2)
-        {
-            HAL_NVIC_EnableIRQ(EXTI2_IRQn);
+	if(htim->Instance == TIM4)
+	    {
+	        if(exti_flag == 0)
+	        {
+	            HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+	            HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	        }
+	        else if(exti_flag == 3)
+	        {
+	            HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+	            HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	        }
+	        else if(exti_flag == 2)
+	        {
+	            HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
-            if(menu_mode == 1)
-            {
-                strcpy(view_type_str, "----");
-                strcpy(page_num_str, "*----");
-                strcpy(status_str, "REC MODE");
-                flag_update_labels = true;
-            }
-        }
-        else if(exti_flag == 4)
-        {
-            HAL_NVIC_EnableIRQ(EXTI4_IRQn);
-            HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-        }
+	            if(menu_mode == 1)
+	            {
+	                strcpy(view_type_str, "----");
+	                strcpy(page_num_str, "*----");
+	                strcpy(status_str, "REC MODE");
+	                flag_update_labels = true;
+	            }
+	        }
+	        else if(exti_flag == 4)
+	        {
+	            HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+	            HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	        }
 
-        exti_flag = 100;
-        HAL_TIM_Base_Stop_IT(&htim4);
-        if(ini == 1)
-        {
-            HAL_TIM_Base_Start_IT(&htim3);
-        }
-    }
-    else if(htim->Instance == TIM3)
-    {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+	        exti_flag = 100;
+	        HAL_TIM_Base_Stop_IT(&htim4);
+	        if(ini == 1)
+	        {
+	            HAL_TIM_Base_Start_IT(&htim3);
+	        }
+	    }
+	    else if(htim->Instance == TIM3)
+	    {
+	        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 
-        if(interpolation != 1)
-        {
-            load_input_int16_to_q15(Results.distance_mm);
-            bilinear_init_q15();
-            bilinear_8x8_to_16x16_q15();
-        }
+	        if(interpolation != 1)
+	        {
+	            load_input_int16_to_q15(Results.distance_mm);
+	            bilinear_init_q15();
+	            bilinear_8x8_to_16x16_q15();
+	        }
 
-        // Notify the main loop to execute UI rendering
-        flag_use_rdata = false;
-        flag_update_heatmap = true;
-    }
+	        // Notify the main loop to execute UI rendering
+	        flag_use_rdata = false;
+	        flag_update_heatmap = true;
+	    }
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -979,7 +994,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
     if(GPIO_Pin == GPIO_PIN_6)
     {
-        vl53l5cx_get_ranging_data(&Dev, &Results);
+    	if(rdMutiDMAflag == 0 && tof_ini == 1)
+    	{
+            vl53l5cx_get_ranging_data(&Dev, &Results);
+    	}
     }
     else if(GPIO_Pin == GPIO_PIN_0) // INTERPOLATION TOGGLE (1x, 2x, 3x)
     {

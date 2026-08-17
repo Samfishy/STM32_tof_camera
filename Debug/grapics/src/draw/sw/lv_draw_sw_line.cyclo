@@ -1,1 +1,5 @@
-../grapics/src/draw/sw/lv_draw_sw_line.c:52:28:lv_draw_sw_line	45
+../grapics/src/draw/sw/../../misc/lv_area.h:123:26:lv_area_get_width	1
+../grapics/src/draw/sw/lv_draw_sw_line.c:52:28:lv_draw_sw_line	12
+../grapics/src/draw/sw/lv_draw_sw_line.c:111:35:draw_line_hor	14
+../grapics/src/draw/sw/lv_draw_sw_line.c:197:35:draw_line_ver	13
+../grapics/src/draw/sw/lv_draw_sw_line.c:277:35:draw_line_skew	14

@@ -5,11 +5,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h \
- ../Drivers/CMSIS/Include/core_cm4.h \
- ../Drivers/CMSIS/Include/cmsis_version.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h \
- ../Drivers/CMSIS/Include/cmsis_gcc.h \
- ../Drivers/CMSIS/Include/mpu_armv7.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/core_cm4.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_version.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_compiler.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_gcc.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h \
@@ -263,7 +263,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/ui/vars.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_types.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_compiler.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_memory.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/none.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_types.h \
@@ -291,7 +291,19 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/filtering_functions.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/support_functions.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/quaternion_math_functions.h \
- ../Core/Src/../../grapics/lvgl.h
+ ../Core/Src/../../grapics/lvgl.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/FreeRTOS.h \
+ ../Core/Inc/FreeRTOSConfig.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/projdefs.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/portable.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/deprecated_definitions.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/mpu_wrappers.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/task.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/list.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/queue.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/task.h \
+ /home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/list.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -299,11 +311,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h:
-../Drivers/CMSIS/Include/core_cm4.h:
-../Drivers/CMSIS/Include/cmsis_version.h:
-../Drivers/CMSIS/Include/cmsis_compiler.h:
-../Drivers/CMSIS/Include/cmsis_gcc.h:
-../Drivers/CMSIS/Include/mpu_armv7.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/core_cm4.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_version.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_compiler.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_gcc.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h:
@@ -561,7 +573,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 /home/samfishy/Documents/GitHub/STM32_tof_camera/grapics/ui/vars.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_types.h:
-../Drivers/CMSIS/Include/cmsis_compiler.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_compiler.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_memory.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/none.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_types.h:
@@ -590,3 +602,15 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/support_functions.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/quaternion_math_functions.h:
 ../Core/Src/../../grapics/lvgl.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/FreeRTOS.h:
+../Core/Inc/FreeRTOSConfig.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/projdefs.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/portable.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/deprecated_definitions.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/mpu_wrappers.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/task.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/list.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/queue.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/task.h:
+/home/samfishy/Documents/GitHub/STM32_tof_camera/FreeRTOS/FreeRTOS-Kernel/include/list.h:

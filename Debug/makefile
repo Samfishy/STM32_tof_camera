@@ -138,6 +138,10 @@ RM := rm -rf
 -include grapics/demos/keypad_encoder/subdir.mk
 -include grapics/demos/benchmark/assets/subdir.mk
 -include grapics/demos/benchmark/subdir.mk
+-include FreeRTOS/FreeRTOS-Kernel/portable/MemMang/subdir.mk
+-include FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/subdir.mk
+-include FreeRTOS/FreeRTOS-Kernel/portable/Common/subdir.mk
+-include FreeRTOS/FreeRTOS-Kernel/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Drivers/CMSIS/CMSIS_DSP/Source/InterpolationFunctions/subdir.mk
 -include Core/Startup/subdir.mk
