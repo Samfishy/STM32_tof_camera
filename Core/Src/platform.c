@@ -63,6 +63,9 @@
 #include "platform.h"
 #include "main.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 extern I2C_HandleTypeDef 	hi2c2;
 
 uint8_t rdMutiDMAflag = 0;
@@ -200,6 +203,6 @@ uint8_t VL53L5CX_WaitMs(
 		VL53L5CX_Platform *p_platform,
                uint32_t TimeMs)
 {
-	HAL_Delay(TimeMs);
+	vTaskDelay(TimeMs);
 	return 0;
 }

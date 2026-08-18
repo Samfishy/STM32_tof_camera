@@ -22,6 +22,7 @@
 #define CANVAS_WIDTH  145
 #define CANVAS_HEIGHT 105
 
+char loading_screen_input[100] = "Initialising....";
 char view_type_str[10] = "LIVE View";
 char page_num_str[10] = "Page 1/0";
 char status_str[10] = "LIVE View";
@@ -29,7 +30,7 @@ char zone_mode[10] = "8x8 zones";
 char zone_int[10] = "1x int";
 
 static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf1[160*20];
+static lv_color_t buf1[160];
 volatile lv_disp_drv_t disp_drv;
 static lv_color_t cbuf[CANVAS_HEIGHT*CANVAS_WIDTH];
 
@@ -70,6 +71,10 @@ void text_update(int var, char *text)
 	else if(var == 5)
 	{
 		strcpy(zone_mode, text);
+	}
+	else if(var == 6)
+	{
+		strcpy(loading_screen_input, text);
 	}
 }
 
@@ -131,7 +136,7 @@ void img_print_lvgl(int interp, int md, int16_t data[])
 void lvgl_main_init()
 {
 	lv_init();
-	lv_disp_draw_buf_init(&draw_buf, buf1, NULL, 160*20);
+	lv_disp_draw_buf_init(&draw_buf, buf1, NULL, 160);
 	lv_disp_drv_init(&disp_drv);
 
 	disp_drv.hor_res = 160;
@@ -150,12 +155,13 @@ void lvgl_main_init()
 	if(objects.page_num) lv_label_set_text(objects.page_num, page_num_str);
 }
 
-void lvgl_screen_redering(int interpolation, int interpolation_menu, int mode, int mode_menu)
+void lvgl_screen_redering(int interpolation, int interpolation_menu, int mode, int mode_menu, int screen_mode)
 {
     lv_timer_handler();
     ui_tick();
-    if (flag_update_heatmap)
+    if (flag_update_heatmap && screen_mode == 1)
     {
+    	lvgl_page_loader(2);
         flag_update_heatmap = false;
         if(flag_use_rdata)
         {
@@ -171,8 +177,12 @@ void lvgl_screen_redering(int interpolation, int interpolation_menu, int mode, i
             }
         }
     }
-
-    HAL_Delay(5);
+    else if(screen_mode == 0)
+    {
+    	lvgl_page_loader(1);
+        lv_timer_handler();
+        ui_tick();
+    }
 }
 
 int lvgl_intToggle(int menu_mode,int interpolation)
@@ -208,7 +218,7 @@ int lvgl_intToggle(int menu_mode,int interpolation)
         if(img_str < img ) img_str ++;
         else img_str = 0;
 
-        image(img_str, mode_menu, interpolation_menu);
+        image(img_str);
         flag_use_rdata = true;
         flag_update_heatmap = true;
     }
@@ -249,7 +259,7 @@ int lvgl_zoneToggle(int menu_mode, int mode, int interpolation)
 		if(img_str > 0 ) img_str--;
 	    else img_str = img;
 
-		image(img_str, mode_menu, interpolation_menu);
+		image(img_str);
 	    flag_use_rdata = true;
 	    flag_update_heatmap = true;
 	}
@@ -259,12 +269,10 @@ int lvgl_zoneToggle(int menu_mode, int mode, int interpolation)
 
 int lvgl_menuToggle(int mode,int menu_mode, int interpolation)
 {
-
     if(menu_mode == 0)
     {
         HAL_NVIC_DisableIRQ(EXTI4_IRQn);
         HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
-        ini = 0;
         menu_mode = 1;
 
     	text_update(1, "REC MODE");
@@ -275,7 +283,6 @@ int lvgl_menuToggle(int mode,int menu_mode, int interpolation)
     else
     {
         menu_mode = 0;
-        ini = 1;
 
     	text_update(1, "LIVE View");
     	text_update(2, "*Page 1/0");
@@ -301,7 +308,7 @@ int lvgl_menuToggle(int mode,int menu_mode, int interpolation)
 
 const char * get_var_loading_screen_input(void)
 {
-    return "Initialising...";
+    return loading_screen_input;
 }
 
 const char * get_var_view_type(void)

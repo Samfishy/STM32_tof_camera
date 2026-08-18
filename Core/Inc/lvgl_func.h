@@ -15,7 +15,7 @@
 void lvgl_main_init();
 void text_update(int var, char *text);
 void lvgl_page_loader(uint8_t page);
-void lvgl_screen_redering(int interpolation, int interpolation_menu, int mode, int mode_menu);
+void lvgl_screen_redering(int interpolation, int interpolation_menu, int mode, int mode_menu, int screen_mode);
 
 int lvgl_intToggle(int menu_mode,int interpolation);
 int lvgl_zoneToggle(int menu_mode, int mode, int interpolation);

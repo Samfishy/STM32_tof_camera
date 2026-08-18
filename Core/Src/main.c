@@ -74,7 +74,7 @@ TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
 int flag_tim2 = 0, tof_ini =0, exti_flag = 100;
-int bt_task_pending =0;
+int bt_task_pending =0, loading = 1;
 extern uint32_t ID;
 extern int16_t rData_int;
 extern q15_t out_q15;
@@ -87,6 +87,7 @@ extern volatile bool flag_update_heatmap;
 extern volatile bool flag_update_labels;
 extern volatile bool flag_use_rdata;
 extern volatile lv_disp_drv_t disp_drv;
+extern uint16_t stored_img[100];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -107,7 +108,15 @@ void button_task();
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/*-----------------------------------------------------------*/
+static void intiTask() __attribute__( ( noreturn ) );
+static void renderTask() __attribute__( ( noreturn ) );
+static void buttonTask() __attribute__( ( noreturn ) );
 
+TaskHandle_t intiTask_handle = NULL;
+TaskHandle_t renderTask_handle = NULL;
+TaskHandle_t buttonTask_handle = NULL;
+/*-----------------------------------------------------------*/
 /* USER CODE END 0 */
 
 /**
@@ -150,24 +159,36 @@ int main(void)
 
   TFT_init();
   lvgl_main_init();
-  ID = flashMEM_init();
-  tof_ini = TOF_init(mode);
 
-  vl53l5cx_start_ranging(&Dev);
-  lvgl_page_loader(2);
+
+( void ) xTaskCreate( &intiTask,
+                    	"intiTSK",
+						512,
+                        NULL,
+                        configMAX_PRIORITIES - 1U,
+                        &intiTask_handle);
+
+  ( void ) xTaskCreate( &renderTask,
+                      	"renderTSK",
+                          512,
+                          NULL,
+                          configMAX_PRIORITIES - 2U,
+                          &renderTask_handle);
+
+  ( void ) xTaskCreate( &buttonTask,
+                      	"buttonTSK",
+                          256,
+                          NULL,
+                          configMAX_PRIORITIES - 1U,
+                          &buttonTask_handle);
+
+  vTaskStartScheduler();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  render_task();
-
-	  if(bt_task_pending == 1)
-	  {
-		  button_task();
-		  bt_task_pending =0;
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -492,10 +513,10 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Stream2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, 0, 1);
+  HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, 6, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream2_IRQn);
   /* DMA2_Stream1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 1, 1);
+  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 9, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
 
 }
@@ -590,19 +611,19 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(rst_tof_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 2, 2);
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 12, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI2_IRQn, 2, 2);
+  HAL_NVIC_SetPriority(EXTI2_IRQn, 12, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI3_IRQn, 2, 2);
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 12, 0);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI4_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 10, 0);
   HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 2, 1);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 11, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
@@ -611,6 +632,59 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void intiTask()
+{
+	while(1)
+	{
+		ID = flashMEM_init();
+		tof_ini = TOF_init(mode);
+		vl53l5cx_start_ranging(&Dev);
+		ini = 1;
+		vTaskDelete(NULL);
+	}
+}
+
+static void renderTask()
+{
+    while(1)
+    {
+    	if(ini == 1 && loading == 1)
+    	{
+    		if(menu_mode == 0)
+    		{
+            	if(Data_ready == 1)
+            	{
+            		Data_ready =0;
+                	render_task();
+              	    lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,1);
+            	}
+    		}
+    		else
+    		{
+    			lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,1);
+    		}
+    	}
+    	else
+    	{
+    		lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,0);
+    	}
+
+        vTaskDelay(5);
+    }
+}
+static void buttonTask()
+{
+    while(1)
+    {
+    	if(bt_task_pending == 1)
+    	{
+    		button_task();
+    		bt_task_pending =0;
+    	}
+        vTaskDelay(10);
+    }
+}
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
     if(GPIO_Pin == GPIO_PIN_6)
@@ -622,14 +696,18 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
     else
     {
+    	loading =0;
+
         if(GPIO_Pin == GPIO_PIN_0) // INTERPOLATION TOGGLE (1x, 2x, 3x)
         {
+        	text_update(6, "Changing Interpolation");
             HAL_NVIC_DisableIRQ(EXTI0_IRQn);
             HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
             exti_flag = 0;
         }
         else if(GPIO_Pin == GPIO_PIN_3) // ZONE TOGGLE (8x8, 4x4)
         {
+        	text_update(6, "Changing Zone Mode");
             HAL_NVIC_DisableIRQ(EXTI3_IRQn);
             HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
             exti_flag = 3;
@@ -637,6 +715,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         }
         else if(GPIO_Pin == GPIO_PIN_4) // CAPTURE
         {
+        	text_update(6, "Capturing");
             HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
             HAL_NVIC_DisableIRQ(EXTI4_IRQn);
             exti_flag = 4;
@@ -644,6 +723,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         }
         else if(GPIO_Pin == GPIO_PIN_2) // MENU TOGGLE
         {
+        	text_update(6, "Changing LIVE/REC Mode");
             HAL_NVIC_DisableIRQ(EXTI2_IRQn);
             exti_flag = 2;
         }
@@ -652,6 +732,28 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 }
 
+
+void render_task()
+{
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+
+    if(interpolation != 1)
+    {
+    	if(menu_mode == 0)
+    	{
+            load_input_int16_to_q15(Results.distance_mm);
+    	}
+    	else
+    	{
+            load_input_int16_to_q15(stored_img);
+    	}
+        bilinear_init_q15();
+        bilinear_8x8_to_16x16_q15();
+    }
+
+    flag_use_rdata = false;
+    flag_update_heatmap = true;
+}
 void button_task()
 {
     if(exti_flag == 0)
@@ -682,24 +784,8 @@ void button_task()
         HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
     }
 
+    loading = 1;
     exti_flag = 100;
-}
-
-void render_task()
-{
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-
-    if(interpolation != 1)
-    {
-        load_input_int16_to_q15(Results.distance_mm);
-        bilinear_init_q15();
-        bilinear_8x8_to_16x16_q15();
-    }
-
-    flag_use_rdata = false;
-    flag_update_heatmap = true;
-
-	lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu);
 }
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
@@ -727,7 +813,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == TIM11)
   {
 	  lv_tick_inc(1);
-    HAL_IncTick();
+	  HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
 

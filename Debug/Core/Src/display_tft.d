@@ -1,6 +1,5 @@
-Core/Src/display_tft.o: ../Core/Src/display_tft.c \
- ../Core/Inc/display_tft.h ../Core/Inc/main.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+Core/Src/display_tft.o: ../Core/Src/display_tft.c ../Core/Inc/lvgl_func.h \
+ ../Core/Inc/main.h ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
@@ -30,8 +29,9 @@ Core/Src/display_tft.o: ../Core/Src/display_tft.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Core/Inc/flash.h ../Core/Inc/st7735.h ../Core/Inc/fonts.h \
  ../Core/Inc/vl53l5cx_api.h ../Core/Inc/platform.h \
+ ../Core/Inc/display_tft.h ../Core/Inc/flash.h ../Core/Inc/st7735.h \
+ ../Core/Inc/fonts.h ../Core/Inc/vl53l5cx_api.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_types.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_compiler.h \
@@ -62,7 +62,7 @@ Core/Src/display_tft.o: ../Core/Src/display_tft.c \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/filtering_functions.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/support_functions.h \
  /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/dsp/quaternion_math_functions.h
-../Core/Inc/display_tft.h:
+../Core/Inc/lvgl_func.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -94,11 +94,13 @@ Core/Src/display_tft.o: ../Core/Src/display_tft.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
+../Core/Inc/vl53l5cx_api.h:
+../Core/Inc/platform.h:
+../Core/Inc/display_tft.h:
 ../Core/Inc/flash.h:
 ../Core/Inc/st7735.h:
 ../Core/Inc/fonts.h:
 ../Core/Inc/vl53l5cx_api.h:
-../Core/Inc/platform.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/CMSIS_DSP/Include/arm_math_types.h:
 /home/samfishy/Documents/GitHub/STM32_tof_camera/Drivers/CMSIS/Include/cmsis_compiler.h:

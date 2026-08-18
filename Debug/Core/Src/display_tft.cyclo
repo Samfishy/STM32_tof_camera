@@ -1,5 +1,5 @@
-../Core/Src/display_tft.c:30:6:TFT_init	1
-../Core/Src/display_tft.c:36:10:flashMEM_init	1
-../Core/Src/display_tft.c:44:6:image	2
-../Core/Src/display_tft.c:60:6:img_store	3
-../Core/Src/display_tft.c:76:6:capture_img	2
+../Core/Src/display_tft.c:31:6:TFT_init	1
+../Core/Src/display_tft.c:37:10:flashMEM_init	1
+../Core/Src/display_tft.c:44:5:image	4
+../Core/Src/display_tft.c:63:6:img_store	2
+../Core/Src/display_tft.c:79:6:capture_img	2

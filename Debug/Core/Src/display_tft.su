@@ -1,5 +1,5 @@
-../Core/Src/display_tft.c:30:6:TFT_init	8	static
-../Core/Src/display_tft.c:36:10:flashMEM_init	8	static
-../Core/Src/display_tft.c:44:6:image	16	static
-../Core/Src/display_tft.c:60:6:img_store	16	static
-../Core/Src/display_tft.c:76:6:capture_img	24	static
+../Core/Src/display_tft.c:31:6:TFT_init	8	static
+../Core/Src/display_tft.c:37:10:flashMEM_init	8	static
+../Core/Src/display_tft.c:44:5:image	8	static
+../Core/Src/display_tft.c:63:6:img_store	8	static
+../Core/Src/display_tft.c:79:6:capture_img	16	static

@@ -12,8 +12,8 @@
 
 void TFT_init();
 uint32_t flashMEM_init();
-void image(int x, int mode_menu, int interpolation_menu);
-void img_store(int img_num,int size, int mode, int interpolation);
+int image(int x);
+void img_store(int mode, int img_num);
 void capture_img(int mode, int interpolation);
 
 #endif /* INC_DISPLAY_TFT_H_ */

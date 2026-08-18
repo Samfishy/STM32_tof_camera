@@ -7,8 +7,11 @@
 
 #include "main.h"
 #include "flash.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 extern SPI_HandleTypeDef hspi1;
+
 #define FLASH_SPI hspi1
 
 #define blocks 64
@@ -21,7 +24,7 @@ void W25_rst (void)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, 0);
 	HAL_SPI_Transmit(&FLASH_SPI, temp, 2, 100);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, 1);
-	HAL_Delay(100);
+	vTaskDelay(100);
 }
 
 uint32_t W25_devID (void)

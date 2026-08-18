@@ -8,6 +8,9 @@
 #include "main.h"
 #include "vl53l5cx_api.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 uint8_t                 status, loop, isAlive, isReady, i,img_data;
 VL53L5CX_Configuration  Dev;            /* Sensor configuration */
 VL53L5CX_ResultsData    Results;        /* Results data from VL53L5CX */
@@ -15,10 +18,10 @@ VL53L5CX_ResultsData    Results;        /* Results data from VL53L5CX */
 int TOF_init(int mode)
 {
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8,0);
-    HAL_Delay(100);
+    vTaskDelay(100);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8,1);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7,1);
-    HAL_Delay(100);
+    vTaskDelay(100);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7,0);
 
     Dev.platform.address = VL53L5CX_DEFAULT_I2C_ADDRESS;
