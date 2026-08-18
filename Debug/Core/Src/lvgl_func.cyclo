@@ -1,0 +1,14 @@
+../Core/Src/lvgl_func.c:82:6:my_flush_cb	1
+../Core/Src/lvgl_func.c:52:6:text_update	6
+../Core/Src/lvgl_func.c:76:6:lvgl_page_loader	1
+../Core/Src/lvgl_func.c:94:6:img_print_lvgl	7
+../Core/Src/lvgl_func.c:131:6:lvgl_main_init	4
+../Core/Src/lvgl_func.c:153:6:lvgl_screen_redering	4
+../Core/Src/lvgl_func.c:178:5:lvgl_intToggle	5
+../Core/Src/lvgl_func.c:219:5:lvgl_zoneToggle	4
+../Core/Src/lvgl_func.c:260:5:lvgl_menuToggle	5
+../Core/Src/lvgl_func.c:302:14:get_var_loading_screen_input	1
+../Core/Src/lvgl_func.c:307:14:get_var_view_type	1
+../Core/Src/lvgl_func.c:312:14:get_var_page	1
+../Core/Src/lvgl_func.c:317:14:get_var_mode_zone	1
+../Core/Src/lvgl_func.c:321:14:get_var_mode_int	1
