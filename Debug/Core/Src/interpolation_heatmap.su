@@ -1,4 +1,4 @@
 ../Core/Src/interpolation_heatmap.c:24:6:bilinear_init_q15	0	static
-../Core/Src/interpolation_heatmap.c:31:6:load_input_int16_to_q15	0	static
+../Core/Src/interpolation_heatmap.c:31:6:load_input_int16_to_q15	8	static
 ../Core/Src/interpolation_heatmap.c:39:6:bilinear_8x8_to_16x16_q15	48	static
-../Core/Src/interpolation_heatmap.c:101:6:heatmap_plotting	12	static
+../Core/Src/interpolation_heatmap.c:101:6:heatmap_plotting	0	static

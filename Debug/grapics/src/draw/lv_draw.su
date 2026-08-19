@@ -1,2 +1,2 @@
 ../grapics/src/draw/lv_draw.c:40:6:lv_draw_init	0	static
-../grapics/src/draw/lv_draw.c:45:6:lv_draw_wait_for_finish	8	static
+../grapics/src/draw/lv_draw.c:45:6:lv_draw_wait_for_finish	0	static

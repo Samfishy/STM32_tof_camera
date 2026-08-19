@@ -30,7 +30,7 @@ char zone_mode[10] = "8x8 zones";
 char zone_int[10] = "1x int";
 
 static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf1[160];
+static lv_color_t buf1[160*20];
 volatile lv_disp_drv_t disp_drv;
 static lv_color_t cbuf[CANVAS_HEIGHT*CANVAS_WIDTH];
 
@@ -49,6 +49,7 @@ extern VL53L5CX_Configuration  Dev;
 extern VL53L5CX_ResultsData    Results;        /* Results data from VL53L5CX */
 extern q15_t out_q15;
 extern int16_t rData_int;
+extern uint16_t stored_img;
 
 void text_update(int var, char *text)
 {
@@ -136,7 +137,7 @@ void img_print_lvgl(int interp, int md, int16_t data[])
 void lvgl_main_init()
 {
 	lv_init();
-	lv_disp_draw_buf_init(&draw_buf, buf1, NULL, 160);
+	lv_disp_draw_buf_init(&draw_buf, buf1, NULL, 160*20);
 	lv_disp_drv_init(&disp_drv);
 
 	disp_drv.hor_res = 160;
@@ -165,16 +166,13 @@ void lvgl_screen_redering(int interpolation, int interpolation_menu, int mode, i
         flag_update_heatmap = false;
         if(flag_use_rdata)
         {
-            img_print_lvgl(interpolation_menu, mode_menu, &rData_int);
+            if(interpolation != 1){img_print_lvgl(interpolation, mode, &out_q15);}
+            else {img_print_lvgl(interpolation_menu, mode_menu, &stored_img);}
         }
         else
         {
-            if(interpolation != 1)
-            {
-                img_print_lvgl(interpolation, mode, &out_q15);
-            } else {
-                img_print_lvgl(interpolation, mode, Results.distance_mm);
-            }
+            if(interpolation != 1){img_print_lvgl(interpolation, mode, &out_q15);}
+            else {img_print_lvgl(interpolation, mode, Results.distance_mm);}
         }
     }
     else if(screen_mode == 0)
@@ -271,12 +269,15 @@ int lvgl_menuToggle(int mode,int menu_mode, int interpolation)
 {
     if(menu_mode == 0)
     {
-        HAL_NVIC_DisableIRQ(EXTI4_IRQn);
         HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
         menu_mode = 1;
 
     	text_update(1, "REC MODE");
     	text_update(2, "Page 1/0");
+
+        if(interpolation == 1)      text_update(4, "1x int");
+        else if(interpolation == 2) text_update(4, "2x int");
+        else text_update(4, "4x int");
 
         vl53l5cx_stop_ranging(&Dev);
     }
@@ -299,7 +300,6 @@ int lvgl_menuToggle(int mode,int menu_mode, int interpolation)
 
         vl53l5cx_start_ranging(&Dev);
 
-        HAL_NVIC_EnableIRQ(EXTI4_IRQn);
         HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
     }
 

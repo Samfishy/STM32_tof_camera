@@ -1,8 +1,8 @@
-../grapics/src/extra/widgets/meter/lv_meter.c:289:13:lv_meter_event	29
 ../grapics/src/extra/widgets/meter/lv_meter.c:279:13:lv_meter_destructor	1
 ../grapics/src/extra/widgets/meter/lv_meter.c:266:13:lv_meter_constructor	1
 ../grapics/src/extra/widgets/meter/lv_meter.c:628:13:inv_arc	1
 ../grapics/src/extra/widgets/meter/lv_meter.c:653:13:inv_line	4
+../grapics/src/extra/widgets/meter/lv_meter.c:289:13:lv_meter_event	30
 ../grapics/src/extra/widgets/meter/lv_meter.c:54:12:lv_meter_create	1
 ../grapics/src/extra/widgets/meter/lv_meter.c:66:20:lv_meter_add_scale	2
 ../grapics/src/extra/widgets/meter/lv_meter.c:87:6:lv_meter_set_scale_ticks	1

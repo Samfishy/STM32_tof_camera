@@ -18,15 +18,12 @@ VL53L5CX_ResultsData    Results;        /* Results data from VL53L5CX */
 int TOF_init(int mode)
 {
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8,0);
-    vTaskDelay(100);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8,1);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7,1);
     vTaskDelay(100);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7,0);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8,1);
 
     Dev.platform.address = VL53L5CX_DEFAULT_I2C_ADDRESS;
-
-    VL53L5CX_Reset_Sensor(&Dev.platform);
 
     status = vl53l5cx_is_alive(&Dev, &isAlive);
     status = vl53l5cx_init(&Dev);

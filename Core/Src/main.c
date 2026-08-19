@@ -87,7 +87,7 @@ extern volatile bool flag_update_heatmap;
 extern volatile bool flag_update_labels;
 extern volatile bool flag_use_rdata;
 extern volatile lv_disp_drv_t disp_drv;
-extern uint16_t stored_img[100];
+extern uint16_t stored_img;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -177,9 +177,9 @@ int main(void)
 
   ( void ) xTaskCreate( &buttonTask,
                       	"buttonTSK",
-                          256,
+                          512,
                           NULL,
-                          configMAX_PRIORITIES - 1U,
+                          configMAX_PRIORITIES - 3U,
                           &buttonTask_handle);
 
   vTaskStartScheduler();
@@ -559,7 +559,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PA0 PA2 PA3 PA4 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : CS_FLASH_Pin */
@@ -614,16 +614,16 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_SetPriority(EXTI0_IRQn, 12, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI2_IRQn, 12, 0);
+  HAL_NVIC_SetPriority(EXTI2_IRQn, 13, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI3_IRQn, 12, 0);
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 11, 0);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
   HAL_NVIC_SetPriority(EXTI4_IRQn, 10, 0);
   HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 11, 0);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 8, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
@@ -641,6 +641,7 @@ static void intiTask()
 		vl53l5cx_start_ranging(&Dev);
 		ini = 1;
 		vTaskDelete(NULL);
+        vTaskDelay(100);
 	}
 }
 
@@ -650,26 +651,19 @@ static void renderTask()
     {
     	if(ini == 1 && loading == 1)
     	{
-    		if(menu_mode == 0)
-    		{
-            	if(Data_ready == 1)
-            	{
-            		Data_ready =0;
-                	render_task();
-              	    lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,1);
-            	}
-    		}
-    		else
-    		{
-    			lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,1);
-    		}
+    		if(Data_ready == 1 || mode )
+            {
+            	Data_ready =0;
+                render_task();
+                lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,1);
+            }
     	}
     	else
     	{
     		lvgl_screen_redering( interpolation, interpolation_menu, mode, mode_menu,0);
     	}
 
-        vTaskDelay(5);
+        vTaskDelay(66);
     }
 }
 static void buttonTask()
@@ -681,7 +675,7 @@ static void buttonTask()
     		button_task();
     		bt_task_pending =0;
     	}
-        vTaskDelay(10);
+        vTaskDelay(55);
     }
 }
 
@@ -700,31 +694,36 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
         if(GPIO_Pin == GPIO_PIN_0) // INTERPOLATION TOGGLE (1x, 2x, 3x)
         {
-        	text_update(6, "Changing Interpolation");
             HAL_NVIC_DisableIRQ(EXTI0_IRQn);
             HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+
+        	text_update(6, "Changing Interpolation");
             exti_flag = 0;
         }
         else if(GPIO_Pin == GPIO_PIN_3) // ZONE TOGGLE (8x8, 4x4)
         {
-        	text_update(6, "Changing Zone Mode");
-            HAL_NVIC_DisableIRQ(EXTI3_IRQn);
+        	HAL_NVIC_DisableIRQ(EXTI3_IRQn);
             HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+
+            text_update(6, "Changing Zone Mode");
             exti_flag = 3;
 
         }
         else if(GPIO_Pin == GPIO_PIN_4) // CAPTURE
         {
-        	text_update(6, "Capturing");
-            HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
             HAL_NVIC_DisableIRQ(EXTI4_IRQn);
+            HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+
+            text_update(6, "Capturing");
             exti_flag = 4;
 
         }
         else if(GPIO_Pin == GPIO_PIN_2) // MENU TOGGLE
         {
-        	text_update(6, "Changing LIVE/REC Mode");
             HAL_NVIC_DisableIRQ(EXTI2_IRQn);
+            HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+
+            text_update(6, "Changing LIVE/REC Mode");
             exti_flag = 2;
         }
 
@@ -745,7 +744,7 @@ void render_task()
     	}
     	else
     	{
-            load_input_int16_to_q15(stored_img);
+            load_input_int16_to_q15((int16_t *)&stored_img);
     	}
         bilinear_init_q15();
         bilinear_8x8_to_16x16_q15();
@@ -760,29 +759,42 @@ void button_task()
     {
     	interpolation = lvgl_intToggle(menu_mode,interpolation);
 
-        HAL_NVIC_EnableIRQ(EXTI0_IRQn);
-        HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+        if(menu_mode == 0)
+        {
+        	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+        }
     }
     else if(exti_flag == 3)
     {
     	mode = lvgl_zoneToggle(menu_mode,mode,interpolation);
 
-        HAL_NVIC_EnableIRQ(EXTI3_IRQn);
-        HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+        if(menu_mode == 0)
+        {
+        	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+        }
     }
     else if(exti_flag == 2)
     {
-        menu_mode = lvgl_menuToggle(mode, menu_mode, interpolation);
+       menu_mode = lvgl_menuToggle(mode, menu_mode, interpolation);
+       image(img_str);
+       Data_ready = 1;
 
-        HAL_NVIC_EnableIRQ(EXTI2_IRQn);
+
     }
     else if(exti_flag == 4)
     {
         capture_img(mode,interpolation);
 
-        HAL_NVIC_EnableIRQ(EXTI4_IRQn);
-        HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+        if(menu_mode == 0)
+        {
+        	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+        }
     }
+
+	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+    HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+    HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+    HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
     loading = 1;
     exti_flag = 100;
@@ -813,7 +825,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == TIM11)
   {
 	  lv_tick_inc(1);
-	  HAL_IncTick();
+    HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
 

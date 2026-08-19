@@ -10,8 +10,7 @@
 #include "st7735.h"
 #include "vl53l5cx_api.h"
 #include "arm_math.h"
-
-extern q15_t out_q15[1024];
+#include <stdio.h>
 
 uint32_t ID;
 uint8_t bytes[2048];
@@ -25,8 +24,10 @@ volatile bool flag_update_heatmap = false;
 volatile bool flag_update_labels = false;
 volatile bool flag_use_rdata = false;
 
+extern uint8_t Data_ready;
+extern q15_t out_q15[1024];
 extern VL53L5CX_Configuration  Dev;
-extern VL53L5CX_ResultsData    Results;        /* Results data from VL53L5CX */
+extern VL53L5CX_ResultsData    Results;
 
 void TFT_init()
 {
@@ -49,8 +50,20 @@ int image(int x)
     int mode_menu = (int)bytes[0];
     int num_zones = (mode_menu == 1 || mode_menu == 0) ? 16 : 64;
 
-    if(mode_menu == 1){text_update(5, "4x4 zones");}
-    else{text_update(5, "8x8 zones");}
+    if(mode_menu == 1)
+    {
+    	text_update(5, "4x4 zones");
+    	IN_W = 4; IN_H = 4;
+    }
+    else
+    {
+    	text_update(5, "8x8 zones");
+    	IN_W = 8; IN_H = 8;
+    }
+
+    char buffer[10];
+    snprintf(buffer, sizeof(buffer), "*Page %d/%d", x, img);
+	text_update(2, buffer);
 
     for (int i = 0; i < num_zones; i++)
     {
@@ -78,15 +91,23 @@ void img_store(int mode, int img_num)
 
 void capture_img(int mode, int interpolation)
 {
-    vl53l5cx_stop_ranging(&Dev);
+	if(menu_mode == 0)
+	{
+	    vl53l5cx_stop_ranging(&Dev);
 
-    img_store(mode,img);
-    img_str = img;
+	    img_store(mode,img);
+	    img_str = img;
 
-    if (img < 10)
-        img++;
-    else
-        img = 0;
+	    if (img < 10) img++;
+	    else img = 0;
 
-    vl53l5cx_start_ranging(&Dev);
+	    vl53l5cx_start_ranging(&Dev);
+	}
+	else
+	{
+		 image(img_str);
+		 img_str--;
+		 if (img_str < 0) img_str = img;
+		 Data_ready = 1;
+	}
 }

@@ -1,2 +1,2 @@
-../grapics/examples/widgets/chart/lv_example_chart_8.c:15:13:draw_event_cb	144	static
-../grapics/examples/widgets/chart/lv_example_chart_8.c:74:6:lv_example_chart_8	80	static
+../grapics/examples/widgets/chart/lv_example_chart_8.c:15:13:draw_event_cb	136	static
+../grapics/examples/widgets/chart/lv_example_chart_8.c:74:6:lv_example_chart_8	64	static

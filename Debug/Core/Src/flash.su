@@ -1,9 +1,9 @@
 ../Core/Src/flash.c:19:6:W25_rst	16	static
-../Core/Src/flash.c:30:10:W25_devID	24	static
-../Core/Src/flash.c:42:6:W25_nRead	32	static
-../Core/Src/flash.c:58:6:W25_fRead	32	static
+../Core/Src/flash.c:30:10:W25_devID	16	static
+../Core/Src/flash.c:42:6:W25_nRead	24	static
+../Core/Src/flash.c:58:6:W25_fRead	24	static
 ../Core/Src/flash.c:76:6:W25_writeENB	16	static
 ../Core/Src/flash.c:85:6:W25_writeDIS	16	static
-../Core/Src/flash.c:94:6:W25_erase	16	static
+../Core/Src/flash.c:94:6:W25_erase	32	static
 ../Core/Src/flash.c:115:10:bytestowrite	0	static
-../Core/Src/flash.c:121:6:W25Q_Write_Page	320	static
+../Core/Src/flash.c:121:6:W25Q_Write_Page	328	static

@@ -6,4 +6,4 @@
 ../Core/Src/flash.c:85:6:W25_writeDIS	1
 ../Core/Src/flash.c:94:6:W25_erase	1
 ../Core/Src/flash.c:115:10:bytestowrite	2
-../Core/Src/flash.c:121:6:W25Q_Write_Page	8
+../Core/Src/flash.c:121:6:W25Q_Write_Page	7

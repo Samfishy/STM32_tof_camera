@@ -1,6 +1,5 @@
-../grapics/src/draw/sw/lv_draw_sw_rect.c:1032:35:shadow_blur_corner	18
-../grapics/src/draw/sw/lv_draw_sw_rect.c:97:13:draw_bg	36
-../grapics/src/draw/sw/lv_draw_sw_rect.c:324:13:draw_bg_img	11
-../grapics/src/draw/sw/lv_draw_sw_rect.c:83:6:lv_draw_sw_bg	1
-../grapics/src/draw/sw/lv_draw_sw_rect.c:1146:6:draw_border_generic	56
-../grapics/src/draw/sw/lv_draw_sw_rect.c:67:6:lv_draw_sw_rect	115
+../grapics/src/draw/sw/lv_draw_sw_rect.c:1032:35:shadow_blur_corner	26
+../grapics/src/draw/sw/lv_draw_sw_rect.c:97:13:draw_bg	59
+../grapics/src/draw/sw/lv_draw_sw_rect.c:83:6:lv_draw_sw_bg	13
+../grapics/src/draw/sw/lv_draw_sw_rect.c:1146:6:draw_border_generic	74
+../grapics/src/draw/sw/lv_draw_sw_rect.c:67:6:lv_draw_sw_rect	150

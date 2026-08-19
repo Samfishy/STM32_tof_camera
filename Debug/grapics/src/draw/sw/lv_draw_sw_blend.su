@@ -1,5 +1,5 @@
-../grapics/src/draw/sw/lv_draw_sw_blend.c:950:26:color_blend_true_color_additive	12	static
-../grapics/src/draw/sw/lv_draw_sw_blend.c:1003:26:color_blend_true_color_subtractive	12	static
+../grapics/src/draw/sw/lv_draw_sw_blend.c:1003:26:color_blend_true_color_subtractive	8	static
+../grapics/src/draw/sw/lv_draw_sw_blend.c:950:26:color_blend_true_color_additive	8	static
 ../grapics/src/draw/sw/lv_draw_sw_blend.c:1029:26:color_blend_true_color_multiply	16	static
 ../grapics/src/draw/sw/lv_draw_sw_blend.c:95:6:lv_draw_sw_blend	24	static
-../grapics/src/draw/sw/lv_draw_sw_blend.c:108:28:lv_draw_sw_blend_basic	112	static
+../grapics/src/draw/sw/lv_draw_sw_blend.c:108:28:lv_draw_sw_blend_basic	104	static

@@ -1,5 +1,6 @@
-../grapics/src/extra/widgets/spinbox/lv_spinbox.c:440:13:lv_spinbox_updatevalue	18
+../grapics/src/extra/widgets/spinbox/lv_spinbox.c:440:13:lv_spinbox_updatevalue	83
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:320:13:lv_spinbox_constructor	1
+../grapics/src/extra/widgets/spinbox/lv_spinbox.c:345:13:lv_spinbox_event	47
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:50:12:lv_spinbox_create	1
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:67:6:lv_spinbox_set_value	1
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:85:6:lv_spinbox_set_rollover	1
@@ -15,4 +16,3 @@
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:257:6:lv_spinbox_get_rollover	1
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:269:6:lv_spinbox_increment	6
 ../grapics/src/extra/widgets/spinbox/lv_spinbox.c:295:6:lv_spinbox_decrement	6
-../grapics/src/extra/widgets/spinbox/lv_spinbox.c:345:13:lv_spinbox_event	25
