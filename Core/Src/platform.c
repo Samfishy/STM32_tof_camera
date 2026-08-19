@@ -63,6 +63,9 @@
 #include "platform.h"
 #include "main.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 extern I2C_HandleTypeDef 	hi2c2;
 
 uint8_t rdMutiDMAflag = 0;
@@ -165,12 +168,17 @@ uint8_t VL53L5CX_Reset_Sensor(VL53L5CX_Platform *p_platform)
 	/* (Optional) Need to be implemented by customer. This function returns 0 if OK */
 
 	/* Set pin LPN to LOW */
+
 	/* Set pin AVDD to LOW */
+
 	/* Set pin VDDIO  to LOW */
+
 	VL53L5CX_WaitMs(p_platform, 100);
 
 	/* Set pin LPN of to HIGH */
+
 	/* Set pin AVDD of to HIGH */
+
 	/* Set pin VDDIO of  to HIGH */
 	VL53L5CX_WaitMs(p_platform, 100);
 
@@ -200,6 +208,6 @@ uint8_t VL53L5CX_WaitMs(
 		VL53L5CX_Platform *p_platform,
                uint32_t TimeMs)
 {
-	HAL_Delay(TimeMs);
+	vTaskDelay(TimeMs);
 	return 0;
 }

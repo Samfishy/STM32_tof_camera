@@ -8,6 +8,8 @@
 #ifndef INC_FLASH_H_
 #define INC_FLASH_H_
 
+#include "main.h"
+
 void W25_rst (void);
 uint32_t W25_devID (void);
 

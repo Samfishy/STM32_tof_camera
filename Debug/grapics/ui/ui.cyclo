@@ -1,4 +1,3 @@
-../grapics/ui/ui.c:11:18:getLvglObjectFromIndex	2
-../grapics/ui/ui.c:18:6:loadScreen	1
+../grapics/ui/ui.c:18:6:loadScreen	2
 ../grapics/ui/ui.c:24:6:ui_init	1
 ../grapics/ui/ui.c:30:6:ui_tick	1

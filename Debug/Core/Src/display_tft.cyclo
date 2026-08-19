@@ -1,0 +1,5 @@
+../Core/Src/display_tft.c:32:6:TFT_init	1
+../Core/Src/display_tft.c:38:10:flashMEM_init	1
+../Core/Src/display_tft.c:45:5:image	4
+../Core/Src/display_tft.c:76:6:img_store	3
+../Core/Src/display_tft.c:92:6:capture_img	6
