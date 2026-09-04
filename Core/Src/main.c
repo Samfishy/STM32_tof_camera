@@ -165,7 +165,7 @@ int main(void)
                     	"intiTSK",
 						512,
                         NULL,
-                        configMAX_PRIORITIES - 1U,
+                        configMAX_PRIORITIES - 3U,
                         &intiTask_handle);
 
   ( void ) xTaskCreate( &renderTask,
@@ -179,7 +179,7 @@ int main(void)
                       	"buttonTSK",
                           512,
                           NULL,
-                          configMAX_PRIORITIES - 3U,
+                          configMAX_PRIORITIES - 1U,
                           &buttonTask_handle);
 
   vTaskStartScheduler();
