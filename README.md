@@ -10,6 +10,11 @@ Built around the **STM32F411** microcontroller and the **VL53L5CX Time-of-Flight
 * **Non-Volatile Recording**: Capture and save depth frames directly to an external W25Qxx SPI Flash memory.
 * **Playback Mode**: Browse and review saved distance captures directly on the device with interactive paging.
 * **Professional UI**: Powered by LVGL 8.4, featuring dynamic loading screens, smooth transitions, and live on-screen variable tracking.
+* 
+<img width="1200" height="1600" alt="WhatsApp Image 2026-09-27 at 22 10 47" src="https://github.com/user-attachments/assets/efd09308-003f-4c14-ab8e-f1b7d4235525" />
+<img width="1600" height="1200" alt="WhatsApp Image 2026-09-27 at 22 10 48" src="https://github.com/user-attachments/assets/409b02a7-cdcf-4c4a-b590-504aa8ac59df" />
+<img width="1600" height="1200" alt="WhatsApp Image 2026-09-27 at 22 10 48 (1)" src="https://github.com/user-attachments/assets/c482b7b0-196d-4592-b0e7-66097f037079" />
+
 
 ## ⚙️ Software Architecture (V2.0)
 The software stack was recently overhauled from a bare-metal polling architecture to a high-performance RTOS system:
@@ -45,6 +50,11 @@ The software stack was recently overhauled from a bare-metal polling architectur
 | `PA2` | Button 2 | EXTI2 (LIVE / REC mode switch) |
 | `PA3` | Button 3 | EXTI3 (Zone toggle / Prev image) |
 | `PA4` | Button 4 | EXTI4 (Capture frame) |
+
+
+https://github.com/user-attachments/assets/952f8710-4672-4aa0-affc-6dfed8811b71
+
+
 
 ## 🚧 Current Challenges & To-Do
 - [ ] **Hardware Button Debouncing**: Currently implementing software latching (disabling EXTI inside the ISR and deferring to an RTOS task). Exploring more robust FreeRTOS-friendly debouncing strategies to prevent edge-case system freezes.
